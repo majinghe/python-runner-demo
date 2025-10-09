@@ -12,12 +12,15 @@ on:
 jobs:
   image-build-push:
     runs-on: ubuntu-latest
+    outputs:
+      pr_tag: ${{ steps.set_image_tag.outputs.pr_tag }}
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set Image Tag
+        id: set_image_tag
         run: |
           echo "PR_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
 
@@ -40,10 +43,6 @@ jobs:
     needs: image-build-push
 
     steps:
-      - name: Get Image Tag
-        run: |
-          echo "PR_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
-          
       - name: Deploy to remote server
         uses: appleboy/ssh-action@v0.1.9
         with:
@@ -53,4 +52,4 @@ jobs:
           script: |
             docker stop flask-app || true
             docker rm flask-app || true
-            docker run --rm -d --name flask-app -p 5000:5000 ${{ secrets.DOCKERHUB_USERNAME }}/flask-demo:${PR_TAG}
+            docker run --rm -d --name flask-app -p 5000:5000 ${{ secrets.DOCKERHUB_USERNAME }}/flask-demo:${{ needs.image-build-push.outputs.pr_tag }}
