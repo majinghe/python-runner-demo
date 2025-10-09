@@ -43,7 +43,7 @@ jobs:
     needs: image-build-push
     steps:
       - name: Scan Docker image with Trivy
-        uses: aquasecurity/trivy-action@v2
+        uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/flask-demo:${{ needs.image-build-push.outputs.pr_tag }}
           format: 'table'           # 可选：table / json / sarif
