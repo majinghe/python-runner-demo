@@ -13,7 +13,7 @@ jobs:
   image-build-push:
     runs-on: ubuntu-latest
     outputs:
-      pr_tag: ${{ steps.set_image_tag.outputs.pr_tag }}
+      pr_tag: ${{ steps.set_image_tag.outputs.PR_TAG }}
     
     steps:
       - name: Checkout code
@@ -32,11 +32,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/flask-demo:${PR_TAG} .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/flask-demo:${{ steps.set_image_tag.outputs.pr_tag }} .
 
       - name: Push Docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/flask-demo:${PR_TAG}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/flask-demo:${{ steps.set_image_tag.outputs.pr_tag }}
 
   docker-deploy:
     runs-on: ubuntu-latest
