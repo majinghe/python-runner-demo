@@ -22,7 +22,7 @@ jobs:
       - name: Set Image Tag
         id: set_image_tag
         run: |
-          echo "PR_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+          echo "PR_TAG=pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
 
       - name: Log in to DockerHub
         uses: docker/login-action@v2
