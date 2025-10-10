@@ -88,3 +88,22 @@ jobs:
             docker stop flask-svt || true
             docker rm flask-svt|| true
             docker run --rm -d --name flask-svt -p 5001:5000 ${{ secrets.DOCKERHUB_USERNAME }}/flask-demo:${GITHUB_REF_NAME}
+
+
+  prod-deploy:
+    runs-on: ubuntu-latest
+    needs: [test,svt-image-build,svt-image-scan]
+    environment:
+      name: PROD
+
+    steps:
+      - name: Deploy to remote server
+        uses: appleboy/ssh-action@v0.1.9
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            docker stop flask-prod || true
+            docker rm flask-prod || true
+            docker run --rm -d --name flask-prod -p 5002:5000 ${{ secrets.DOCKERHUB_USERNAME }}/flask-demo:${GITHUB_REF_NAME}
