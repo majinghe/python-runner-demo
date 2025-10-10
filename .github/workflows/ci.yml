@@ -57,6 +57,7 @@ jobs:
         with:
           name: trivy-scan-result
           path: trivy-report.json
+          retention-days: 1
 
   docker-deploy:
     runs-on: ubuntu-latest
