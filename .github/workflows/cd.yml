@@ -53,7 +53,7 @@ jobs:
 
   svt-image-scan:
     runs-on: ubuntu-latest
-    needs: [test,dev-image-build]
+    needs: [test,svt-image-build]
     steps:
       - name: Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@0.28.0
