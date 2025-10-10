@@ -27,7 +27,7 @@ def hello():
         </style>
     </head>
     <body>
-        Hello, GitHub Actions!!!!!!!!!!!!
+        Hello, GitHub Actions.
     </body>
     </html>
     """)
