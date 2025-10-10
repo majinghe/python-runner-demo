@@ -5,6 +5,7 @@ on:
     types: 
       - opened
       - synchronize  # 当 PR 有新 commit 推送时触发
+      - reopened
   # push:
   #   branches:
   #     - main  # 触发条件，可改为你默认分支
