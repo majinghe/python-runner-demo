@@ -5,6 +5,7 @@ on:
     types: 
       - published
       - deleted
+      - created
 
 jobs:
   test:
