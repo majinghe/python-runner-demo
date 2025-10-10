@@ -1,10 +1,14 @@
 name: Build and Deploy SVT Env
 
+# on:
+#   release:
+#     types: 
+#       - published
+#       - deleted
+
 on:
-  release:
-    types: 
-      - published
-      - deleted
+  push:
+    branches: [main]
 
 jobs:
   test:
