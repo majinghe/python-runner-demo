@@ -46,6 +46,7 @@ jobs:
 
       - name: Build Docker image
         run: |
+          echo "Tag is ${GITHUB_REF_NAME}"
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/flask-demo:${GITHUB_REF_NAME}
 
       - name: Push Docker image
