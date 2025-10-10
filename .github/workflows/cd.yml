@@ -50,11 +50,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ${{ env.IMAGE_NAME }}/flask-demo:${{ env.IMAGE_TAG }} .
+          docker build -t ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
 
       - name: Push Docker image
         run: |
-          docker push ${{ env.IMAGE_NAME }}/flask-demo:${{ env.IMAGE_TAG }}
+          docker push ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
   svt-image-scan:
     runs-on: ubuntu-latest
@@ -63,7 +63,7 @@ jobs:
       - name: Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: ${{ env.IMAGE_NAME }}/flask-demo:${{ env.IMAGE_TAG }}
+          image-ref: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           format: 'json'           # 可选：table / json / sarif
           exit-code: '0'            # 若发现高危漏洞则失败
           output: trivy-report.json # 将结果保存为 json 文件
@@ -91,7 +91,7 @@ jobs:
           script: |
             docker stop flask-svt || true
             docker rm flask-svt|| true
-            docker run --rm -d --name flask-svt -p 5001:5000 ${{ env.IMAGE_NAME }}/flask-demo:${{ env.IMAGE_TAG }}
+            docker run --rm -d --name flask-svt -p 5001:5000 ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
 
   prod-deploy:
@@ -110,4 +110,4 @@ jobs:
           script: |
             docker stop flask-prod || true
             docker rm flask-prod || true
-            docker run --rm -d --name flask-prod -p 5002:5000 ${{ env.IMAGE_NAME }}/flask-demo:${{ env.IMAGE_TAG }}
+            docker run --rm -d --name flask-prod -p 5002:5000 ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
