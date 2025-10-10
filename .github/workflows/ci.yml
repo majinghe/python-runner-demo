@@ -34,6 +34,7 @@ jobs:
   
   image-build-push:
     runs-on: ubuntu-latest
+    needs: [test]
     outputs:
       pr_tag: ${{ steps.set_image_tag.outputs.PR_TAG }}
     
@@ -62,7 +63,7 @@ jobs:
 
   image-scan:
     runs-on: ubuntu-latest
-    needs: image-build-push
+    needs: [test,image-build-push]
     steps:
       - name: Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@0.28.0
@@ -83,7 +84,7 @@ jobs:
 
   docker-deploy:
     runs-on: ubuntu-latest
-    needs: [image-build-push,image-scan]
+    needs: [test,image-build-push,image-scan]
 
     steps:
       - name: Deploy to remote server
