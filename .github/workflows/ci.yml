@@ -46,10 +46,17 @@ jobs:
         uses: aquasecurity/trivy-action@0.28.0
         with:
           image-ref: ${{ secrets.DOCKERHUB_USERNAME }}/flask-demo:${{ needs.image-build-push.outputs.pr_tag }}
-          format: 'table'           # 可选：table / json / sarif
+          format: 'json'           # 可选：table / json / sarif
           exit-code: '0'            # 若发现高危漏洞则失败
+          output: trivy-report.json # 将结果保存为 json 文件
           vuln-type: 'os,library'   # 扫描类型
           ignore-unfixed: false      # 是否忽略未修复漏洞
+      
+      - name: Upload Trivy Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-scan-result
+          path: trivy-report.json
 
   docker-deploy:
     runs-on: ubuntu-latest
