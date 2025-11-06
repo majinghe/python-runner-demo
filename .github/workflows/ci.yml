@@ -1,15 +1,15 @@
 name: Build and Deploy DEV Env
 
 on:
-  pull_request:
-    types: 
-      - opened
-      - synchronize  # 当 PR 有新 commit 推送时触发
-      - reopened
-  # push:
-  #   branches:
-  #     - main  # 触发条件，可改为你默认分支
-  #
+  # pull_request:
+  #   types: 
+  #     - opened
+  #     - synchronize  # 当 PR 有新 commit 推送时触发
+  #     - reopened
+  push:
+    branches:
+      - main  # 触发条件，可改为你默认分支
+  
 env:
   IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/flask-demo
   IMAGE_TAG: "pr-${{ github.event.pull_request.number }}"
